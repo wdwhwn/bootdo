@@ -119,14 +119,14 @@ public class ExpertrecommendController {
 						if(dict.getValue().equals(domainValue)){
 							domainStr=domainStr+dict.getName();
 						}
-					}
+				}
 				}
 				expertrecommend.setDomain(domainStr);
 			}
 			rootMap.put("expertrecommend", expertrecommend);
 			//rootMap.put("departs", departs);
 
-			FreemarkerUtil.createFile("expertrecommend.ftl", docFileName, rootMap, request, response, FreemarkerUtil.WORD_FILE);
+			FreemarkerUtil.createFile("ExpertrecommendController","expertrecommend.ftl", docFileName, rootMap, request, response, FreemarkerUtil.WORD_FILE);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

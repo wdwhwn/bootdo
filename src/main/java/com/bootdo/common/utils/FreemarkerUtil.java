@@ -1,5 +1,6 @@
 package com.bootdo.common.utils;
 
+import com.bootdo.law.controller.ExpertrecommendController;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
@@ -29,18 +30,19 @@ public class FreemarkerUtil {
 	 
 	 private static FreemarkerUtil ftl ;
 	 
-	 private FreemarkerUtil(String templateFolder) throws IOException {
+	 private FreemarkerUtil(Class className) throws IOException {
 		 cfg = new Configuration();
-		 File path = new File(ResourceUtils.getURL("classpath:").getPath());
-         cfg.setDirectoryForTemplateLoading(new File(path.getPath()+templateFolder));
+		 //File path = new File(ResourceUtils.getURL("classpath:").getPath());
+		 cfg.setClassForTemplateLoading(className.getClass(), "template");
+         //cfg.setDirectoryForTemplateLoading(new File(path.getPath()+templateFolder));
          cfg.setObjectWrapper(new DefaultObjectWrapper());
      }
 
-	 private static void check(HttpServletRequest request) {
+	 private static void check(Class className,HttpServletRequest request) {
 	        if (ftl == null) {
 	            synchronized (LOCK) {
 	            	try {
-						ftl = new FreemarkerUtil("/freemarkertemplates/com/bootdo/law");
+						ftl = new FreemarkerUtil(className);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -55,8 +57,9 @@ public class FreemarkerUtil {
 	     * 必须先设置response导出配置，然后解析模版，否则会出问题
 	     * @throws IOException 
 	     */
-	    public static void createFile(String templateName, String docFileName, Map<String,Object> rootMap, HttpServletRequest request, HttpServletResponse response, int fileType) throws IOException {
+	    public static void createFile(String clazz,String templateName, String docFileName, Map<String,Object> rootMap, HttpServletRequest request, HttpServletResponse response, int fileType) throws IOException {
 	  //  	response.resetBuffer();
+
 	    	//设置导出
 	        response.addHeader("Cache-Control","no-cache");
 	        response.setCharacterEncoding("UTF-8");
@@ -82,9 +85,14 @@ public class FreemarkerUtil {
 				} catch (Exception e) {
 				}
 	        }
-	        check(request);
-	       //解析模版
-	        Template temp = cfg.getTemplate(templateName, "UTF-8");
+	        //check(className,request);
+	        //解析模版
+			Configuration cfg = new Configuration();
+	        if(clazz.equals("ExpertrecommendController")){
+				cfg.setClassForTemplateLoading(ExpertrecommendController.class, "../template");
+			}
+
+			Template temp = cfg.getTemplate(templateName, "UTF-8");
 	        PrintWriter write = response.getWriter();
 	        try {
 				temp.process(rootMap, write);
