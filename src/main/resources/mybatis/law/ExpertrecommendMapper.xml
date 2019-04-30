@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.law.dao.ExpertrecommendDao">
+
+	<select id="get" resultType="com.bootdo.law.domain.ExpertrecommendDO">
+		select `id`,`name`,`sex`,`birthday`,`headpic`,`nation`,`address`,`health`,`startworktime`,`title`,`specialskill`,`domain`,`edu_fulltimedate`,`edu_fulltimeschool`,`edu_onjobdate`,`edu_onjobschool`,`workduty`,`workexperience`,`rewardsandpunish`,`opinion`,`opiniondate`,`comment` from expertrecommend where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.law.domain.ExpertrecommendDO">
+		select `id`,`name`,`sex`,`birthday`,`nation`,`address`,`health`,`startworktime`,`title`,`specialskill`,`domain`,`edu_fulltimedate`,`edu_fulltimeschool`,`edu_onjobdate`,`edu_onjobschool`,`workduty`,`workexperience`,`rewardsandpunish`,`opinion`,`opiniondate`,`comment` from expertrecommend
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and name LIKE CONCAT(CONCAT('%', #{name}), '%') </if>
+		  		  <if test="sex != null and sex != ''"> and sex = #{sex} </if>
+		  		  <if test="birthday != null and birthday != ''"> and birthday = #{birthday} </if>
+			      <if test="headpic != null and headpic != ''"> and headpic = #{headpic} </if>
+		  		  <if test="nation != null and nation != ''"> and nation = #{nation} </if>
+		  		  <if test="address != null and address != ''"> and address = #{address} </if>
+		  		  <if test="health != null and health != ''"> and health = #{health} </if>
+		  		  <if test="startworktime != null and startworktime != ''"> and startworktime = #{startworktime} </if>
+		  		  <if test="title != null and title != ''"> and title = #{title} </if>
+		  		  <if test="specialskill != null and specialskill != ''"> and specialskill = #{specialskill} </if>
+			      <if test="domain != null and domain != ''">
+					  and <foreach item="item" collection="domain.split(',')" open="(" separator="or" close=")">
+					      FIND_IN_SET(#{item},domain)
+					  </foreach>
+				  </if>
+		  		  <if test="eduFulltimedate != null and eduFulltimedate != ''"> and edu_fulltimedate = #{eduFulltimedate} </if>
+		  		  <if test="eduFulltimeschool != null and eduFulltimeschool != ''"> and edu_fulltimeschool = #{eduFulltimeschool} </if>
+		  		  <if test="eduOnjobdate != null and eduOnjobdate != ''"> and edu_onjobdate = #{eduOnjobdate} </if>
+		  		  <if test="eduOnjobschool != null and eduOnjobschool != ''"> and edu_onjobschool = #{eduOnjobschool} </if>
+		  		  <if test="workduty != null and workduty != ''"> and workduty = #{workduty} </if>
+		  		  <if test="workexperience != null and workexperience != ''"> and workexperience = #{workexperience} </if>
+		  		  <if test="rewardsandpunish != null and rewardsandpunish != ''"> and rewardsandpunish = #{rewardsandpunish} </if>
+		  		  <if test="opinion != null and opinion != ''"> and opinion = #{opinion} </if>
+		  		  <if test="opiniondate != null and opiniondate != ''"> and opiniondate = #{opiniondate} </if>
+		  		  <if test="comment != null and comment != ''"> and comment = #{comment} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from expertrecommend
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+			      <if test="name != null and name != ''"> and name like CONCAT(CONCAT('%', #{name}), '%') </if>
+		  		  <if test="sex != null and sex != ''"> and sex = #{sex} </if>
+		  		  <if test="birthday != null and birthday != ''"> and birthday = #{birthday} </if>
+			      <if test="headpic != null and headpic != ''"> and headpic = #{headpic} </if>
+		  		  <if test="nation != null and nation != ''"> and nation = #{nation} </if>
+		  		  <if test="address != null and address != ''"> and address = #{address} </if>
+		  		  <if test="health != null and health != ''"> and health = #{health} </if>
+		  		  <if test="startworktime != null and startworktime != ''"> and startworktime = #{startworktime} </if>
+		  		  <if test="title != null and title != ''"> and title = #{title} </if>
+		  		  <if test="specialskill != null and specialskill != ''"> and specialskill = #{specialskill} </if>
+		  		  <if test="domain != null and domain != ''">
+		  		  	and <foreach item="item" collection="domain.split(',')" open="(" separator="or" close=")">
+						FIND_IN_SET(#{item},domain)
+					</foreach>
+				  </if>
+		  		  <if test="eduFulltimedate != null and eduFulltimedate != ''"> and edu_fulltimedate = #{eduFulltimedate} </if>
+		  		  <if test="eduFulltimeschool != null and eduFulltimeschool != ''"> and edu_fulltimeschool = #{eduFulltimeschool} </if>
+		  		  <if test="eduOnjobdate != null and eduOnjobdate != ''"> and edu_onjobdate = #{eduOnjobdate} </if>
+		  		  <if test="eduOnjobschool != null and eduOnjobschool != ''"> and edu_onjobschool = #{eduOnjobschool} </if>
+		  		  <if test="workduty != null and workduty != ''"> and workduty = #{workduty} </if>
+		  		  <if test="workexperience != null and workexperience != ''"> and workexperience = #{workexperience} </if>
+		  		  <if test="rewardsandpunish != null and rewardsandpunish != ''"> and rewardsandpunish = #{rewardsandpunish} </if>
+		  		  <if test="opinion != null and opinion != ''"> and opinion = #{opinion} </if>
+		  		  <if test="opiniondate != null and opiniondate != ''"> and opiniondate = #{opiniondate} </if>
+		  		  <if test="comment != null and comment != ''"> and comment = #{comment} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.law.domain.ExpertrecommendDO" useGeneratedKeys="true" keyProperty="id">
+		insert into expertrecommend
+		(
+			`name`, 
+			`sex`, 
+			`birthday`,
+			`headpic`,
+			`nation`, 
+			`address`, 
+			`health`, 
+			`startworktime`, 
+			`title`, 
+			`specialskill`, 
+			`domain`, 
+			`edu_fulltimedate`, 
+			`edu_fulltimeschool`, 
+			`edu_onjobdate`, 
+			`edu_onjobschool`, 
+			`workduty`, 
+			`workexperience`, 
+			`rewardsandpunish`, 
+			`opinion`, 
+			`opiniondate`, 
+			`comment`
+		)
+		values
+		(
+			#{name}, 
+			#{sex}, 
+			#{birthday},
+			#{headpic},
+			#{nation}, 
+			#{address}, 
+			#{health}, 
+			#{startworktime}, 
+			#{title}, 
+			#{specialskill}, 
+			#{domain}, 
+			#{eduFulltimedate}, 
+			#{eduFulltimeschool}, 
+			#{eduOnjobdate}, 
+			#{eduOnjobschool}, 
+			#{workduty}, 
+			#{workexperience}, 
+			#{rewardsandpunish}, 
+			#{opinion}, 
+			#{opiniondate}, 
+			#{comment}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.law.domain.ExpertrecommendDO">
+		update expertrecommend 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="birthday != null">`birthday` = #{birthday}, </if>
+			<if test="headpic != null">`headpic` = #{headpic}, </if>
+			<if test="nation != null">`nation` = #{nation}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="health != null">`health` = #{health}, </if>
+			<if test="startworktime != null">`startworktime` = #{startworktime}, </if>
+			<if test="title != null">`title` = #{title}, </if>
+			<if test="specialskill != null">`specialskill` = #{specialskill}, </if>
+			<if test="domain != null">`domain` = #{domain}, </if>
+			<if test="eduFulltimedate != null">`edu_fulltimedate` = #{eduFulltimedate}, </if>
+			<if test="eduFulltimeschool != null">`edu_fulltimeschool` = #{eduFulltimeschool}, </if>
+			<if test="eduOnjobdate != null">`edu_onjobdate` = #{eduOnjobdate}, </if>
+			<if test="eduOnjobschool != null">`edu_onjobschool` = #{eduOnjobschool}, </if>
+			<if test="workduty != null">`workduty` = #{workduty}, </if>
+			<if test="workexperience != null">`workexperience` = #{workexperience}, </if>
+			<if test="rewardsandpunish != null">`rewardsandpunish` = #{rewardsandpunish}, </if>
+			<if test="opinion != null">`opinion` = #{opinion}, </if>
+			<if test="opiniondate != null">`opiniondate` = #{opiniondate}, </if>
+			<if test="comment != null">`comment` = #{comment}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from expertrecommend where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from expertrecommend where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
