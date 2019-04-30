@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header">
+
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="law:expertrecommend:expertrecommend" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="law:expertrecommend:expertrecommend" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+						<div class="columns pull-right">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+
+						<form class="form-horizontal pull-right col-md-9" style="margin-top:15px;">
+							<div class="form-group">
+								<label class="col-md-2 control-label">姓名：</label>
+								<div class="col-md-3">
+									<input id="name" name="name" type="text" class="form-control" placeholder="">
+								</div>
+
+								<label class="col-md-2 control-label">专业领域：</label>
+								<div class="col-md-4">
+									<label th:each="domain:${dictDOList}" class="checkbox-inline">
+										<input name="domain" type="checkbox" th:value="${domain.value}" th:text="${domain.name}">
+									</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="law:expertrecommend:expertrecommend">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="law:expertrecommend:expertrecommend">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="law:expertrecommend:expertrecommend">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript">
+		var dictDOList = [[${dictDOList}]];
+	</script>
+	<script type="text/javascript" src="/js/appjs/law/expertrecommend/expertrecommend.js"></script>
+</body>
+</html>

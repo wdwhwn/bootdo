@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${expertrecommend.id}"  type="hidden">
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="col-sm-4 control-label">姓名：</label>
+										<div class="col-sm-8">
+											<input id="name" name="name" th:value="${expertrecommend.name}" class="form-control" type="text">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 control-label">性别：</label>
+										<div class="col-sm-8">
+											<select name="sex" id="sex"	class="form-control chosen-select">
+												<option   th:selected="false" th:value="0" th:text="男"></option>
+												<option   th:selected="${expertrecommend.sex eq 1}" th:value="1" th:text="女"></option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 control-label">出生年月：</label>
+										<div class="col-sm-8">
+											<div class="input-group">
+											<input id="birthday" name="birthday" th:value="${#dates.format(expertrecommend.birthday,'yyyy-MM-dd')}" class="form-control" type="text">
+											<span class="input-group-addon">
+												<span class="glyphicon glyphicon-calendar"></span>
+											</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 control-label">民族：</label>
+										<div class="col-sm-8">
+											<input id="nation" name="nation" th:value="${expertrecommend.nation}" class="form-control" type="text">
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-6" style="height:200px;">
+									<div class="form-group">
+										<label class="col-sm-4 control-label">头像：</label>
+										<div class="col-sm-8">
+											<img th:src="${expertrecommend.headpic}" style="width:150px;height:180px;" id="showheadpic"/>
+											<input id="headpic" name="headpic"  type="hidden" th:value="${expertrecommend.headpic}"/>
+											<button type="button" class="layui-btn" id="addheadpic" style="position:relative;top:70px;left:30px;">
+												<i class="fa fa-plus"></i>上传头像
+											</button>
+											<button type="button" class="layui-btn" id="deleteheadpic" style="position:relative;top:70px;left:30px;" onclick="deleteheadpicfunc();">
+												<i class="fa fa-minus"></i>删除头像
+											</button>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">籍贯：</label>
+								<div class="col-sm-10">
+									<input id="address" name="address" th:value="${expertrecommend.address}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-2 control-label">健康状况：</label>
+								<div class="col-sm-10">
+									<input id="health" name="health" th:value="${expertrecommend.health}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">开始工作时间：</label>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<input id="startworktime" name="startworktime" th:value="${#dates.format(expertrecommend.startworktime,'yyyy-MM-dd')}" class="form-control" type="text">
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+								<label class="col-sm-2 control-label">专业技术职务：</label>
+								<div class="col-sm-4">
+									<input id="title" name="title" th:value="${expertrecommend.title}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-2 control-label">特长：</label>
+								<div class="col-sm-10">
+									<input id="specialskill" name="specialskill" th:value="${expertrecommend.specialskill}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">专业领域：</label>
+								<div class="col-sm-10">
+									<label th:each="dictDO : ${dictDOList}">
+										<input type="checkbox" name="domain" class="hobby"  th:value="${dictDO.value}" th:text="${dictDO.name}" th:checked="${checkContainsMethod.thymleafContains(dictDO.value,expertrecommend.domain)} == true"/>
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">学历学位-全日制教育：</label>
+								<div class="col-sm-4">
+									<input id="eduFulltimedate" name="eduFulltimedate" th:value="${expertrecommend.eduFulltimedate}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">学历学位-毕业院校系及专业：</label>
+								<div class="col-sm-4">
+									<input id="eduFulltimeschool" name="eduFulltimeschool" th:value="${expertrecommend.eduFulltimeschool}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">学历学位-在职教育：</label>
+								<div class="col-sm-4">
+									<input id="eduOnjobdate" name="eduOnjobdate" th:value="${expertrecommend.eduOnjobdate}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">学历学位-毕业院校系及专业：</label>
+								<div class="col-sm-4">
+									<input id="eduOnjobschool" name="eduOnjobschool" th:value="${expertrecommend.eduOnjobschool}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">工作职责：</label>
+								<div class="col-sm-10">
+									<textarea id="workduty" name="workduty" th:text="${expertrecommend.workduty}" class="form-control" rows="3"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">工作经历：</label>
+								<div class="col-sm-10">
+									<textarea id="workexperience" name="workexperience" th:text="${expertrecommend.workexperience}" class="form-control" rows="3"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">奖惩情况：</label>
+								<div class="col-sm-10">
+									<textarea id="rewardsandpunish" name="rewardsandpunish" th:text="${expertrecommend.rewardsandpunish}" class="form-control" rows="3"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">单位意见：</label>
+								<div class="col-sm-10">
+									<textarea id="opinion" name="opinion" th:text="${expertrecommend.opinion}" class="form-control" rows="3"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">意见日期：</label>
+								<div class="col-sm-4">
+									<div class="input-group"><input id="opiniondate" name="opiniondate" th:value="${#dates.format(expertrecommend.opiniondate,'yyyy-MM-dd')}" class="form-control" type="text">
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">备注：</label>
+								<div class="col-sm-10">
+									<textarea id="comment" name="comment" th:text="${expertrecommend.comment}" class="form-control" rows="3"></textarea>
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<link rel="stylesheet" href="/css/plugins/datapicker/datepicker3.css">
+	<link href="/css/layui.css" rel="stylesheet">
+	<script type="text/javascript" src="/js/appjs/law/expertrecommend/edit.js">
+	</script>
+	<script src="/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+	<script src="/js/layui.js"></script>
+	<script>
+		function deleteheadpicfunc(){
+			$("#showheadpic").attr("src","../../../expert.png");
+			$("#headpic").val("");
+		}
+		$(function () {
+			//初始化头像
+			if($("#headpic").val() == null || $("#headpic").val() ==''){
+				$("#showheadpic").attr("src","../../../expert.png");
+			}
+
+			$("#birthday").datepicker({
+				autoclose: true,
+				format: "yyyy-mm-dd"
+			});
+			$("#startworktime").datepicker({
+				autoclose: true,
+				format: "yyyy-mm-dd"
+			});
+			$("#opiniondate").datepicker({
+				autoclose: true,
+				format: "yyyy-mm-dd"
+			});
+
+			layui.use('upload', function () {
+				var upload = layui.upload;
+				//执行实例
+				var uploadInst = upload.render({
+					elem: '#addheadpic', //绑定元素
+					url: '/law/expertrecommend/upload', //上传接口
+					size: 1000,
+					accept: 'file',
+					done: function (r) {
+						layer.msg(r.msg);
+						$("#showheadpic").attr("src",r.fileName);
+						$("#headpic").val(r.fileName);
+						//console.log(r.fileName+"!!!!");
+					},
+					error: function (r) {
+						layer.msg(r.msg);
+					}
+				});
+			});
+
+		});
+	</script>
+</body>
+</html>
