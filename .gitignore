@@ -61,3 +61,6 @@ fabric.properties
 
 # log
 applog
+
+#.map
+*.map
