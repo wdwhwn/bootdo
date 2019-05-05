@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan("com.bootdo.*.dao")
 @SpringBootApplication
 @EnableCaching
-public class BootdoApplication{
+public class BootdoApplication extends  SpringBootServletInitializer{
     public static void main(String[] args) {
         SpringApplication.run(BootdoApplication.class, args);
         System.out.println("ヾ(◍°∇°◍)ﾉﾞ    bootdo启动成功      ヾ(◍°∇°◍)ﾉﾞ\n" +
@@ -29,5 +29,10 @@ public class BootdoApplication{
                 " _| |__) || \\__. || \\__. || |, _| |_.' /| \\__. | \n" +
                 "|_______/  '.__.'  '.__.' \\__/|______.'  '.__.'  ");
     }
+     @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder){
+        return builder.sources(BootdoApplication.class);
+     }
+
 
 }
